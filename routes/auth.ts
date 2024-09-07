@@ -1,19 +1,28 @@
 import express from 'express'
-import * as passport from 'passport'
 import { Strategy as LocalStrategy } from 'passport-local'
 import crypto from 'crypto'
 import { db } from '../utils/postgres'
 import { queries } from '../utils/postgres'
+var passport = require('passport')
 
 const router = express.Router()
 
-passport.serializeUser(function(user, cb) {
+declare global {
+  namespace Express {
+    interface User {
+      id: number
+      username: string
+    }
+  }
+}
+
+passport.serializeUser(function(user: Express.User, cb:any) {
   process.nextTick(function() {
     cb(null, { id: user.id, username: user.username });
   });
 });
 
-passport.deserializeUser(function(user, cb) {
+passport.deserializeUser(function(user: Express.User, cb:any) {
   process.nextTick(function() {
     return cb(null, user);
   });
