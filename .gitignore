@@ -1,0 +1,6 @@
+.env
+access.log
+public/dist
+.sentryclirc
+.DS_Store
+node_modules
