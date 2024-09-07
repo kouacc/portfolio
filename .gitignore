@@ -4,3 +4,7 @@ public/dist
 .sentryclirc
 .DS_Store
 node_modules
+
+# JS files
+*.js
+*.js.map
