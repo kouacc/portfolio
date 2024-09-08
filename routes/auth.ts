@@ -1,7 +1,6 @@
 import express from 'express'
 import crypto from 'crypto'
-import { db } from '../utils/postgres'
-import { queries } from '../utils/postgres'
+import { db, queries } from '../utils/postgres'
 import * as jwt from 'jsonwebtoken'
 import bodyParser from 'body-parser'
 import { generateJWT } from '../middleware/jwt'
@@ -10,6 +9,15 @@ const router = express.Router()
 
 var urlencodedParser = bodyParser.urlencoded({ extended: false })
 
+router.get('/checkuser'), async (req:any, res:any) => {
+  try {
+    const data = await db.one(queries.checkIfUserExists)
+    res.json(data)
+  } catch (error) {
+    res.json(error)
+    throw new Error ('Impossible de vérifier si un user existe dans la database')
+  }
+}
 
 router.post('/login/password', urlencodedParser, async (req: any, res: any) => {
   try {
