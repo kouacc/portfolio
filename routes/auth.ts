@@ -1,66 +1,36 @@
 import express from 'express'
-import { Strategy as LocalStrategy } from 'passport-local'
 import crypto from 'crypto'
 import { db } from '../utils/postgres'
 import { queries } from '../utils/postgres'
-var passport = require('passport')
+import * as jwt from 'jsonwebtoken'
+import bodyParser from 'body-parser'
+import { generateJWT } from '../middleware/jwt'
 
 const router = express.Router()
 
-declare global {
-  namespace Express {
-    interface User {
-      id: number
-      username: string
+var urlencodedParser = bodyParser.urlencoded({ extended: false })
+
+
+router.post('/login/password', urlencodedParser, async (req: any, res: any) => {
+  try {
+    const data_received = {
+      username: req.body.username,
+      password : req.body.password
     }
+
+    //query la database
+    const db_data = await db.one(queries.auth, data_received.username)
+    // comparer les données
+    if (crypto.pbkdf2Sync(data_received.password, db_data.salt, 310000, 32, 'sha256') === db_data.hashed_password) {
+      //créer le JWT
+      generateJWT(data_received.username)
+      res.redirect('/admin')
+    } else {
+      res.json("Nom d'utilisateur ou mot de passe incorrect")
+    }
+  } catch (error) {
+    throw new Error('Login failed')
   }
-}
-
-passport.serializeUser(function(user: Express.User, cb:any) {
-  process.nextTick(function() {
-    cb(null, { id: user.id, username: user.username });
-  });
-});
-
-passport.deserializeUser(function(user: Express.User, cb:any) {
-  process.nextTick(function() {
-    return cb(null, user);
-  });
-});
-
-passport.use(new LocalStrategy(async function verify(username: string, password: string, cb:any) {
-    const data = await db.oneOrNone(queries.auth, username)
-    if (!data) {
-        return cb(null, false, {
-            message: 'Incorrect username or password'
-        })
-    }
-
-    crypto.pbkdf2(password, data.salt, 310000, 32, 'sha256', function(err, hashedpassword) {
-        if (err) {
-            return cb(err);
-        }
-        if (!crypto.timingSafeEqual(data.hashed_password, hashedpassword)) {
-            return cb(null, false, {
-                message: 'Incorrect username or password.' 
-            });
-        }
-        return cb(null, data);
-    });
-}))
-
-router.post('/login/password', passport.authenticate('local', {
-    successRedirect: '/admin',
-    failureRedirect: '/admin/login'
-    })
-)
-
-router.post('/logout', function(req, res, next) {
-  req.logout(function(err) {
-    if (err) {
-      return next(err);
-    }
-  })
 })
 
 module.exports = router
