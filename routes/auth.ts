@@ -21,14 +21,14 @@ router.post('/login/password', urlencodedParser, async (req: any, res: any) => {
     //query la database
     const db_data = await db.one(queries.auth, data_received.username)
     // comparer les données
-    if (crypto.pbkdf2Sync(data_received.password, db_data.salt, 310000, 32, 'sha256') === db_data.hashed_password) {
+    if (Buffer.compare(crypto.pbkdf2Sync(data_received.password, db_data.salt, 310000, 32, 'sha256'), db_data.hashed_password) === 0) {
       //créer le JWT
-      generateJWT(data_received.username)
-      res.redirect('/admin')
+      res.json(generateJWT(data_received.username))
     } else {
       res.json("Nom d'utilisateur ou mot de passe incorrect")
     }
   } catch (error) {
+    console.log(error)
     throw new Error('Login failed')
   }
 })

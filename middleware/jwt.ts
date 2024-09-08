@@ -1,13 +1,10 @@
 import * as jwt from 'jsonwebtoken'
-import express from 'express'
 require("dotenv").config();
 
 
 export function generateJWT(username: string): string {
-    return jwt.sign(username, process.env.JWT_TOKEN as string, { expiresIn: '1800s'})
+    return jwt.sign(username, process.env.JWT_TOKEN as string)
 }
-
-
 
 export function authenticateJWT(req:any, res:any, next:any) {
     const authHeader = req.headers['authorization']
@@ -25,3 +22,4 @@ export function authenticateJWT(req:any, res:any, next:any) {
         next()
     })
 }
+
