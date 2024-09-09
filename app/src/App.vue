@@ -3,7 +3,9 @@
 </script>
 
 <template>
-  <RouterView />
+  <main class="container">
+    <RouterView />
+  </main>
 </template>
 
 

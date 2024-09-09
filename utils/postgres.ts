@@ -6,7 +6,7 @@ export const db = pgp()(`postgres://${process.env.POSTGRES_USERNAME}:${process.e
 export const queries = {
     auth: 'SELECT * FROM users WHERE username = $1',
     checkIfUserExists: 'SELECT EXISTS(SELECT 1 FROM users)',
-    listProjects: 'SELECT id, title, year, status FROM projects',
+    getProjectsList: 'SELECT id, title, year, status FROM projects',
     registerProject: 'INSERT INTO projects (id, title, content, year, status, techs) VALUES ($1, $2, $3, $4, $5, $6)',
     updateProject: 'UPDATE',
     deleteProject: 'DELETE FROM projects WHERE id = $1',

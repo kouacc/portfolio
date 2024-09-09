@@ -9,6 +9,7 @@ import './instrument'
 import * as Sentry from '@sentry/node'
 
 const apiRouter = require("./routes/api")
+const protectedApiRouter = require("./routes/api/protected")
 const authRouter = require("./routes/auth")
 const utilsRouter = require("./routes/utils")
 
@@ -42,6 +43,7 @@ app.use(function onError(err:any, req:any, res:any, next:any) {
 });
 
 app.use("/api", apiRouter)
+app.use("/api/protected", protectedApiRouter)
 app.use("/auth", authRouter)
 app.use("/utils", utilsRouter);
 

@@ -15,7 +15,7 @@ router.get('/checkuser'), async (req:any, res:any) => {
     res.json(data)
   } catch (error) {
     res.json(error)
-    throw new Error ('Impossible de vérifier si un user existe dans la database')
+    throw new Error('Impossible de vérifier si un user existe dans la database')
   }
 }
 
