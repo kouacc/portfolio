@@ -3,7 +3,7 @@ import path from 'path'
 import fs from 'fs'
 import morgan from 'morgan'
 import cors from 'cors'
-import session from 'express-session'
+import cookieParser from 'cookie-parser'
 
 import './instrument'
 import * as Sentry from '@sentry/node'
@@ -24,6 +24,7 @@ app.use(cors());
 app.use(morgan("combined", { stream: accessLogStream }));
 app.use(express.static(path.join(__dirname, "public/dist")));
 app.set("trust proxy", true)
+app.use(cookieParser());
 
 Sentry.setupExpressErrorHandler(app);
 
