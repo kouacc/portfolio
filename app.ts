@@ -8,8 +8,9 @@ import cookieParser from 'cookie-parser'
 import './instrument'
 import * as Sentry from '@sentry/node'
 
-const indexRouter = require("./routes/index")
+const apiRouter = require("./routes/api")
 const authRouter = require("./routes/auth")
+const utilsRouter = require("./routes/utils")
 
 const port = process.env.PORT || 4000
 
@@ -18,6 +19,11 @@ const app = express()
 var accessLogStream = fs.createWriteStream(path.join(__dirname, "access.log"), {
   flags: "a",
 });
+
+var corsOptions = {
+  origin: "http://example.com",
+  optionsSuccessStatus: 200,
+};
 
 app.use(express.json());
 app.use(cors());
@@ -35,8 +41,9 @@ app.use(function onError(err:any, req:any, res:any, next:any) {
   res.end(res.sentry + "\n");
 });
 
-app.use("/", indexRouter)
+app.use("/api", apiRouter)
 app.use("/auth", authRouter)
+app.use("/utils", utilsRouter);
 
 app.get("*", (req:any, res:any) => {
   res.sendFile(path.join(__dirname, "public/dist/index.html"));

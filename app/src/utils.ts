@@ -9,3 +9,11 @@ export async function checkToken(): Promise<Boolean> {
     }
     return true
 }
+
+export async function registerNewProject() {
+    try {
+        await axios.post('/')
+    } catch (error) {
+        console.log(error)
+    }
+}
