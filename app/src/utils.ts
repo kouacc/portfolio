@@ -17,3 +17,11 @@ export async function registerNewProject() {
         console.log(error)
     }
 }
+
+export async function fetchProject(id: number) {
+    try {
+        return await axios.get(`/api/project/${id}`)
+    } catch (error) {
+        console.log(error)
+    }
+}

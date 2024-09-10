@@ -6,3 +6,11 @@ export interface ProjectsResponse {
     status?: String,
     techs?: number[],
 }
+
+export interface ProjectPreviewResponse {
+    title: String,
+    content: String,
+    year?: Date,
+    status?: String,
+    techs?: number[]
+}
