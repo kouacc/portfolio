@@ -73,11 +73,18 @@ ScrollTrigger.create({
     <div class="editor">
     <textarea class="input text-black" :value="input" @input="update"></textarea>
     <div class="editor_output" v-html="output"></div>
-    <button @click="registerProjectToPreview()">Afficher l'aperçu</button>
+    <button>Afficher l'aperçu</button>
   </div>
+  <input type="file" name="images" multiple accept="image/png, image/jpeg, image/webp">
   <nav class="navbar flex gap-3 items-center w-fit rounded-xl border border-zinc-700 bg-zinc-800 px-3 py-2 fixed bottom-0 mb-16 left-1/2 -translate-x-1/2">
-    <button class="fill-white transition-all hover:bg-zinc-700 p-2 rounded-lg"><IconGear class="size-6" /></button>
-    <button class="fill-white transition-all hover:bg-zinc-700 p-2 rounded-lg"><IconPreview class="size-6" /></button>
+    <button class="has-tooltip fill-white transition-all hover:bg-zinc-700 p-2 rounded-lg">
+      <IconGear class="size-6" />
+      <span class="tooltip transition-all -ml-14 -mt-20 bg-zinc-800 border border-zinc-700 px-2 py-1.5 rounded-lg">Paramètres du projet</span>
+    </button>
+    <button @click="registerProjectToPreview()" class="has-tooltip fill-white transition-all hover:bg-zinc-700 p-2 rounded-lg">
+      <IconPreview class="size-6" />
+      <span class="tooltip transition-all -ml-14 -mt-20 bg-zinc-800 border border-zinc-700 px-2 py-1.5 rounded-lg">Prévisualiser</span>
+    </button>
     <button class="bg-blue-500 rounded-lg px-2 py-1.5">Créer le projet</button>
   </nav>
 </template>

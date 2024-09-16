@@ -7,6 +7,14 @@
   src: url(./fonts/GeistVariableVF.woff2);
 }
 
+.tooltip {
+  @apply invisible absolute;
+}
+
+.has-tooltip:hover .tooltip {
+  @apply visible z-50;
+}
+
 @layer base {
   h1 {
     @apply font-geist text-7xl
@@ -21,7 +29,7 @@
   }
 
   button {
-    @apply font-geist 
+    @apply font-geist
   }
 }
 
@@ -34,7 +42,7 @@
 @layer utilities {
   .editor_output {
     h1 {
-      @apply text-2xl;
+      @apply text-3xl;
     }
     h2 {
       @apply text-xl;
