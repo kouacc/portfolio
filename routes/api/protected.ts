@@ -10,7 +10,7 @@ const upload = multer()
 
 const router = express.Router();
 
-router.post("/createproject", upload.array('photos', 12), authorization, async (req: any, res: any) => {
+router.post("/createproject", upload.array('images', 8), authorization, async (req: any, res: any) => {
     const data = req.body
     try {
         await db.none(queries.registerProject, [])
@@ -24,10 +24,12 @@ router.post("/createproject", upload.array('photos', 12), authorization, async (
     }
 })
 
-router.post("/updateproject/:id", upload.none, authorization, async (req: any, res: any) => {
+router.put("/updateproject/:id", upload.array('images', 8), authorization, async (req: any, res: any) => {
     const project_id: String = req.params.id;
+    const timestamp = new Date().toISOString().split("T")[0];
+    const project_data = req.body
     try {
-
+        await db.none(queries.updateProject, [])
     } catch (error) {
         console.log(error)
         throw new Error(`Impossible de modifier le projet d'ID ${project_id}`)

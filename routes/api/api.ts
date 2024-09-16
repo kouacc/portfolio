@@ -12,4 +12,13 @@ router.get("/projects", async (req: any, res: any) => {
     }
 })
 
+router.get("/project/:id", async (req: any, res: any) => {
+  try {
+    const data = await db.one(queries.getProjectById)
+    res.json(data)
+  } catch (error) {
+    res.status(500).json({ error: (error as any).message })
+  }
+})
+
 module.exports = router

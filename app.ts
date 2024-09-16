@@ -8,7 +8,7 @@ import cookieParser from 'cookie-parser'
 import './instrument'
 import * as Sentry from '@sentry/node'
 
-const apiRouter = require("./routes/api")
+const apiRouter = require("./routes/api/api")
 const protectedApiRouter = require("./routes/api/protected")
 const authRouter = require("./routes/auth")
 const utilsRouter = require("./routes/utils")
