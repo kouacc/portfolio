@@ -47,5 +47,18 @@ router.post("/deleteproject/:id", authorization, async (req: any, res: any) => {
     }
 })
 
+router.get("/logs", authorization, async (req: any, res: any) => {
+    try {
+        fs.readFile('./access.log', 'utf8', (err, data) => {
+            if (err) {
+                throw new Error('Impossible de lire les logs')
+            }
+            res.json(data)
+        })
+    } catch (error) {
+        console.log(error)
+        throw new Error('Impossible de lire les logs')
+    }
+})
 
 module.exports = router;
