@@ -16,6 +16,8 @@ onMounted(async () => {
 </script>
 
 <template>
-    <h1>Bienvenue</h1>
-    <RouterLink to="/admin/editor/new" class="bg-zinc-800 border border-zinc-700 px-3 py-1.5 rounded-xl">Créer un projet</RouterLink>
+    <div class="container">
+        <h1>Bienvenue</h1>
+        <RouterLink to="/admin/editor/new" class="bg-zinc-800 border border-zinc-700 px-3 py-1.5 rounded-xl">Créer un projet</RouterLink>
+    </div>
 </template>
