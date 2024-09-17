@@ -47,7 +47,7 @@ router.post("/deleteproject/:id", authorization, async (req: any, res: any) => {
     }
 })
 
-router.get("/logs", authorization, async (req: any, res: any) => {
+router.get("/logs", async (req: any, res: any) => {
     try {
         fs.readFile('./access.log', 'utf8', (err, data) => {
             if (err) {

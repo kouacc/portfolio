@@ -4,7 +4,10 @@ export interface ProjectsResponse {
     content: String,
     year?: Date,
     status?: String,
+    repository?: String,
     techs?: number[],
+    created: Date,
+    modified: Date,
 }
 
 export interface ProjectPreviewResponse {

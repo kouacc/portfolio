@@ -1,6 +1,6 @@
 <!-- eslint-disable vue/multi-word-component-names -->
 <script setup lang="ts">
-import { ref, computed, watch, onMounted } from 'vue'
+import { ref, computed, watch, onMounted, onUnmounted } from 'vue'
 import { marked } from 'marked'
 import { debounce } from 'lodash-es'
 import { useRouter } from 'vue-router';
@@ -8,6 +8,8 @@ import { gsap } from 'gsap';
 import IconGear from '@/components/icons/IconGear.vue';
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import IconPreview from '@/components/icons/IconPreview.vue';
+import IconOK from '@/components/icons/IconOK.vue';
+import IconWaiting from '@/components/icons/IconWaiting.vue';
 
 
 gsap.registerPlugin(ScrollTrigger);
@@ -28,6 +30,7 @@ const project = ref({
     content: input.value,
     year: '',
     status: '',
+    repository: '',
     techs: [],
 })
 
@@ -57,7 +60,7 @@ watch(input, () => {
     setTimeout(() => {
       isSaved.value = true
       localStorage.setItem('cached_project_preview', JSON.stringify(project.value))
-    }, 2000)
+    }, 15000)
 })
 
 async function registerProjectToPreview() {
@@ -76,6 +79,15 @@ onMounted(() => {
       project_imgs.value = JSON.parse(localStorage.getItem('cached_project_imgs') as string)
     }
 })
+
+/* onUnmounted(() => {
+  if (localStorage.getItem('cached_project_preview')) {
+    // clear le localstorage de l'item si les champs sont vides
+  }
+  if (localStorage.getItem('cached_project_imgs')) {
+    // clear le localstorage de l'item si l'array est vide
+  }
+}) */
 
 const showAnim = gsap.from('.navbar', {
   yPercent: 100,
@@ -98,14 +110,14 @@ ScrollTrigger.create({
     <textarea class="input w-full h-1/2 md:w-1/2 md:h-screen dark:bg-zinc-800 dark:text-white p-5 rounded-xl md:rounded-tr-xl" :value="input" @input="update"></textarea>
     <div class="editor_output w-full h-1/2 md:w-1/2 md:h-screen" v-html="output"></div>
   </div>
-  <nav class="navbar flex gap-3 items-center w-fit rounded-xl border border-zinc-700 bg-zinc-800 px-3 py-2 fixed bottom-0 mb-16 left-1/2 -translate-x-1/2">
+  <nav class="navbar flex gap-3 items-center justify-around w-full h-20 sm:h-fit sm:w-fit rounded-t-xl sm:rounded-xl border border-zinc-700 bg-zinc-800 px-3 py-2 fixed bottom-0 sm:mb-16 left-1/2 -translate-x-1/2 ">
     <button @click="params_popup = ! params_popup" class="has-tooltip fill-white transition-all hover:bg-zinc-700 p-2 rounded-lg">
-      <IconGear class="size-5" />
+      <IconGear class="size-8 md:size-5" />
       <span class="tooltip transition-all -ml-14 -mt-20 bg-zinc-800 border border-zinc-700 px-2 py-1.5 rounded-lg">Paramètres du projet</span>
     </button>
-    <div v-show="params_popup" class="w-screen absolute bottom-16 p-4 rounded-xl bg-zinc-800 border border-zinc-700 flex flex-col items-start justify-start">
+    <div v-show="params_popup" class="w-fit absolute bottom-16 p-4 rounded-xl bg-zinc-800 border border-zinc-700 flex flex-col items-start justify-start">
       <h1 class="text-2xl">Paramètres du projet</h1>
-      <div class="space-y-3">
+      <div class="space-y-3 w-full">
         <div class="flex flex-col gap-2">
           <label for="title">Titre</label>
           <input class="bg-zinc-700 px-2.5 py-1 rounded-lg" type="text" v-model="project.title">
@@ -116,21 +128,23 @@ ScrollTrigger.create({
         </div>
         <div class="flex flex-col gap-2">
           <label for="title">Images</label>
-          <input class="file:bg-zinc-700 file:border-0 file:p-0 file:text-white file:px-2.5 file:py-1 file:rounded-lg" type="file" multiple accept="image/png, image/jpeg, image/webp" @change="onFileChange">
+          <input class="file:bg-zinc-700 file:border-0 file:p-0 file:text-white file:px-2.5 file:py-1 file:rounded-lg" type="file" multiple accept="image/png, image/jpeg, image/webp" @change="onFileChange, console.log(event.target.files)">
         </div>
-        <div>
+        <div class="space-y-3">
           <h2>Aperçu des images</h2>
           <div class="flex gap-3 items-center">
-            <img v-for="(img, index) in project_imgs" :key="index" :src="img">
+            <img class="object-fill w-24 h-auto" v-for="(img, index) in project_imgs" :key="index" :src="img">
           </div>
         </div>
       </div>
     </div>
     <button @click="registerProjectToPreview()" class="has-tooltip fill-white transition-all hover:bg-zinc-700 p-2 rounded-lg">
-      <IconPreview class="size-5" />
+      <IconPreview class="size-8 md:size-5" />
       <span class="tooltip transition-all -ml-14 -mt-20 bg-zinc-800 border border-zinc-700 px-2 py-1.5 rounded-lg">Prévisualiser</span>
     </button>
-    <button class="bg-blue-500 rounded-lg px-2 py-1.5 text-sm">Créer le projet</button>
+    <button class="bg-blue-500 rounded-lg px-2 py-1.5 text-lg md:text-sm">Créer le projet</button>
+    <IconOK v-if="isSaved" class="fill-green-500 size-6 md:size-4" />
+    <IconWaiting v-else-if="!isSaved" class="size-6 md:size-4 fill-red-400" />
   </nav>
   
 </template>

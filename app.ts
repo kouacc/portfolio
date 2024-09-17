@@ -28,7 +28,11 @@ var corsOptions = {
 
 app.use(express.json());
 app.use(cors());
-app.use(morgan("combined", { stream: accessLogStream }));
+app.use(
+  morgan(":remote-addr :method :url :status :res[content-length] - :response-time ms" + "<br>", {
+    stream: accessLogStream,
+  })
+);
 app.use(express.static(path.join(__dirname, "public/dist")));
 app.set("trust proxy", true)
 app.use(cookieParser());

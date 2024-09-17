@@ -25,6 +25,7 @@ declare module 'vue-router/auto-routes' {
     '/admin/editor/preview': RouteRecordInfo<'/admin/editor/preview', '/admin/editor/preview', Record<never, never>, Record<never, never>>,
     '/admin/firstsetup': RouteRecordInfo<'/admin/firstsetup', '/admin/firstsetup', Record<never, never>, Record<never, never>>,
     '/admin/login': RouteRecordInfo<'/admin/login', '/admin/login', Record<never, never>, Record<never, never>>,
+    '/admin/logs': RouteRecordInfo<'/admin/logs', '/admin/logs', Record<never, never>, Record<never, never>>,
     '/projects': RouteRecordInfo<'/projects', '/projects', Record<never, never>, Record<never, never>>,
   }
 }
